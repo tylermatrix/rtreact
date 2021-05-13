@@ -1,61 +1,61 @@
-import logo from "./logo.svg";
+import React from "react";
+
 import "./App.css";
 
-//Variable allowing you to interpolate in execution
-const title = "react";
-
-//Object that you can pull information from with {welcome.greeting}
-const welcome = {
-  greeting: "hey",
-  title: "react",
-};
-
-//Function that you can execution in component
-function getTitle(title) {
-  return title;
-}
-
-//Defining arrray outside, but can also be done inside
-const list = [
-  {
-    title: "React",
-    url: "https://reactjs.org",
-    author: "Jordan Wilke",
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: "Redux",
-    url: "https://redux.js.org/",
-    author: "Dan Abramov, Andrew Clark",
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-];
-
-const numbers = [1, 2, 3, 4];
-//function using map to iterate over array and return new array
-const newNumbers = numbers.map(function (number) {
-  return number * 2;
-});
-
 const App = () => {
+  const stories = [
+    {
+      title: "React",
+      url: "https://reactjs.org",
+      author: "Jordan Wilke",
+      num_comments: 3,
+      points: 4,
+      objectID: 0,
+    },
+    {
+      title: "Redux",
+      url: "https://redux.js.org/",
+      author: "Dan Abramov, Andrew Clark",
+      num_comments: 2,
+      points: 5,
+      objectID: 1,
+    },
+  ];
+
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const searchedStories = stories.filter(function (story) {
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   return (
     <div className="App">
       <h1>My Hacker Stories</h1>
-      <label htmlFor="search">Search: </label>
-      <input type="text" id="search" />
-      <hr />
 
-      <List />
+      <Search onSearch={handleSearch} />
+      <List list={searchedStories} />
     </div>
   );
 };
 
-const List = () => {
-  return list.map(function (item) {
+const Search = (props) => {
+  return (
+    <div className="">
+      <label htmlFor="search">Search:</label>
+      <input type="text" id="search" onChange={props.onSearch} />
+      <p>
+        Searching for <strong>{props.searchTerm}</strong>.
+      </p>
+    </div>
+  );
+};
+
+const List = (props) => {
+  return props.list.map((item) => {
     return (
       <div key={item.objectID}>
         <span>
